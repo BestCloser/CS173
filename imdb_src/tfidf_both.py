@@ -3,7 +3,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 
 df = pd.read_csv('sorted.csv')
 
-tfidf = TfidfVectorizer(ngram_range=(2,2))
+tfidf = TfidfVectorizer(ngram_range=(1,2))
 tfidf.fit(df['review'])
 X = tfidf.transform(df['review'])
 print(X.shape) #dimensions of the vectorizer table

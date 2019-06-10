@@ -1,11 +1,11 @@
 import pandas as pd
-from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_extraction.text import CountVectorizer
 
 df = pd.read_csv('sorted.csv')
 
-tfidf = TfidfVectorizer(ngram_range=(2,2))
-tfidf.fit(df['review'])
-X = tfidf.transform(df['review'])
+cv = CountVectorizer(ngram_range=(1,2))
+cv.fit(df['review'])
+X = cv.transform(df['review'])
 print(X.shape) #dimensions of the vectorizer table
 
 
@@ -18,14 +18,14 @@ Y = [0 if i < 25000 else 1 for i in range(50000)] ## 0 for negative, 1 for posit
 X_train, X_test, Y_train, Y_test = train_test_split(X, Y, train_size = .75)
 ## We can customize train_size OR test_size
 
-print("tfidf with bigrams only:")
+print("cv with both unigrams and bigrams:")
 
-print("solver=\'lbfgs\':")
-lr = LogisticRegression(solver='lbfgs') #solver specified to remove FutureWarning
+# print("solver=\'lbfgs\':")
+# lr = LogisticRegression(solver='lbfgs', max_iter=10000) #solver specified to remove FutureWarning
 # print("solver=\'liblinear\':")
 # lr = LogisticRegression(solver='liblinear')
-# print("solver=\'saga\':")
-# lr = LogisticRegression(solver='saga')
+print("solver=\'saga\':")
+lr = LogisticRegression(solver='saga', max_iter=10000)
 
 lr.fit(X_train, Y_train)
 print("Accuracy: %s" % accuracy_score(Y_test, lr.predict(X_test)))
@@ -35,7 +35,7 @@ print("Accuracy: %s" % accuracy_score(Y_test, lr.predict(X_test)))
 #display top 5 positive and negative words
 feature_to_coef = {
     word: coef for word, coef in zip(
-        tfidf.get_feature_names(), lr.coef_[0]
+        cv.get_feature_names(), lr.coef_[0]
     )
 }
 for best_positive in sorted(

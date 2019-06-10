@@ -19,7 +19,14 @@ X_train, X_test, Y_train, Y_test = train_test_split(X, Y, train_size = .75)
 ## We can customize train_size OR test_size
 
 print("tfidf with unigrams:")
-lr = LogisticRegression(solver='lbfgs') #solver specified to remove FutureWarning
+
+# print("solver=\'lbfgs\':")
+# lr = LogisticRegression(solver='lbfgs') #solver specified to remove FutureWarning
+print("solver=\'liblinear\':")
+lr = LogisticRegression(solver='liblinear')
+# print("solver=\'saga\':")
+# lr = LogisticRegression(solver='saga')
+
 lr.fit(X_train, Y_train)
 print("Accuracy: %s" % accuracy_score(Y_test, lr.predict(X_test)))
 

@@ -19,7 +19,14 @@ X_train, X_test, Y_train, Y_test = train_test_split(X, Y, train_size = .75)
 ## We can customize train_size OR test_size
 
 print("cv with bigrams only:")
-lr = LogisticRegression(solver='saga', max_iter=10000) #solver specified to remove FutureWarning
+
+# print("solver=\'lbfgs\':")
+# lr = LogisticRegression(solver='lbfgs', max_iter=10000) #solver specified to remove FutureWarning
+# print("solver=\'liblinear\':")
+# lr = LogisticRegression(solver='liblinear')
+print("solver=\'saga\':")
+lr = LogisticRegression(solver='saga', max_iter=10000)
+
 lr.fit(X_train, Y_train)
 print("Accuracy: %s" % accuracy_score(Y_test, lr.predict(X_test)))
 
